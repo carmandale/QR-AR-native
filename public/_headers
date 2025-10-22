@@ -1,0 +1,25 @@
+# Cloudflare Pages MIME Type Configuration
+# Ensures correct Content-Type headers for AR model files
+
+# USDZ files (iOS Quick Look)
+/*.usdz
+  Content-Type: model/vnd.usdz+zip
+  Cache-Control: public, max-age=31536000, immutable
+
+# GLB files (Android Scene Viewer)
+/*.glb
+  Content-Type: model/gltf-binary
+  Cache-Control: public, max-age=31536000, immutable
+  Access-Control-Allow-Origin: *
+  Access-Control-Allow-Methods: GET
+
+# Preview images
+/assets/images/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static assets
+/assets/css/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/js/*
+  Cache-Control: public, max-age=31536000, immutable

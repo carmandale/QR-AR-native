@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="View the Flood Disaster Scenario in augmented reality. Interactive 3D model showing flood water levels and affected infrastructure.">
+	<title>Flood Disaster Scenario | AR Model</title>
+
+	<!-- Styles -->
+	<link rel="stylesheet" href="/assets/css/styles.css">
+
+	<!-- Device Detection & AR Launcher -->
+	<script src="/assets/js/device-detection.js"></script>
+	<script src="/assets/js/ar-launcher.js"></script>
+</head>
+<body>
+	<div class="container">
+		<!-- Page Header -->
+		<header class="page-header">
+			<h1>Flood Disaster Scenario</h1>
+			<p class="text-muted">Interactive AR model for emergency preparedness training</p>
+		</header>
+
+		<!-- Page Content -->
+		<main class="page-content">
+			<div class="ar-viewer">
+				<!-- AR Preview Image (fallback for non-AR devices) -->
+				<img
+					id="ar-preview"
+					class="ar-preview"
+					src="/assets/images/flood-preview.png"
+					alt="3D model preview showing flood water levels and affected infrastructure"
+					onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27800%27 height=%27600%27%3E%3Crect fill=%27%23ddd%27 width=%27800%27 height=%27600%27/%3E%3Ctext fill=%27%23999%27 x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27 font-size=%2724%27%3EFlood Disaster Model%3C/text%3E%3C/svg%3E'"
+				>
+
+				<!-- iOS Quick Look AR Button (hidden by default) -->
+				<div id="ios-ar-container" class="ar-button-container hidden">
+					<a
+						id="ios-ar-link"
+						rel="ar"
+						href="/models/flood.usdz"
+						class="btn btn-primary btn-large btn-block"
+					>
+						<img id="ios-ar-preview" src="/assets/images/flood-preview.png" alt="View in AR" style="display:none;">
+						📱 View in AR (iOS Quick Look)
+					</a>
+				</div>
+
+				<!-- Android Scene Viewer AR Button (hidden by default) -->
+				<div id="android-ar-container" class="ar-button-container hidden">
+					<button
+						id="android-ar-button"
+						class="btn btn-primary btn-large btn-block"
+					>
+						📱 View in AR (Scene Viewer)
+					</button>
+				</div>
+
+				<!-- Fallback Content (for non-AR devices) -->
+				<div id="fallback-container" class="fallback-content hidden">
+					<h2>Flood Disaster Scenario</h2>
+					<p>
+						This 3D model shows flood water levels, affected infrastructure, and safe zones for flood emergency planning.
+					</p>
+					<div class="system-requirements">
+						<p><strong>AR viewing requires:</strong></p>
+						<ul style="text-align: left; max-width: 400px; margin: 0 auto;">
+							<li>iOS 12+ (iPhone 7 or newer), or</li>
+							<li>ARCore-compatible Android device (Android 7.0+)</li>
+						</ul>
+						<p class="mt-md">
+							Scan the QR code with a compatible mobile device to view this model in augmented reality.
+						</p>
+					</div>
+				</div>
+
+				<!-- Model Description (for all devices) -->
+				<div class="ar-info">
+					<h3>About This Model</h3>
+					<p>
+						The Flood Disaster Scenario model illustrates the impact of flooding on communities and infrastructure. Key features include:
+					</p>
+					<ul style="text-align: left; max-width: 500px; margin: 0 auto;">
+						<li>Water level indicators and affected areas</li>
+						<li>Safe zones and evacuation routes</li>
+						<li>Critical infrastructure (power, water, roads)</li>
+						<li>Emergency shelter locations</li>
+					</ul>
+					<p class="mt-md">
+						<strong>Scale:</strong> 1 unit = 1 meter (models appear at realistic size in AR)
+					</p>
+				</div>
+			</div>
+
+			<!-- Navigation -->
+			<div class="text-center mt-lg">
+				<a href="/" class="btn">← Back to All Models</a>
+			</div>
+		</main>
+
+		<!-- Page Footer -->
+		<footer class="page-footer">
+			<p>&copy; 2025 AR Disaster Scenarios. Educational resource for emergency preparedness.</p>
+		</footer>
+	</div>
+
+	<!-- Initialize AR Experience -->
+	<script>
+		// Model metadata (embedded in page)
+		const MODEL = {
+			id: "flood",
+			name: "Flood Disaster Scenario",
+			description: "3D model showing flood water levels, affected infrastructure, and safe zones for flood emergency planning.",
+			usdzPath: "/models/flood.usdz",
+			glbPath: "/models/flood.glb",
+			previewImage: "/assets/images/flood-preview.png"
+		};
+
+		// Detect device and show appropriate AR button
+		window.addEventListener('DOMContentLoaded', () => {
+			const device = detectDevice();
+
+			console.log('Device detected:', device);
+
+			// Get UI elements
+			const iosContainer = document.getElementById('ios-ar-container');
+			const androidContainer = document.getElementById('android-ar-container');
+			const fallbackContainer = document.getElementById('fallback-container');
+			const androidButton = document.getElementById('android-ar-button');
+
+			// Show appropriate content based on device capabilities
+			if (device.arMethod === 'quicklook') {
+				// iOS device with Quick Look support
+				iosContainer.classList.remove('hidden');
+			} else if (device.arMethod === 'sceneviewer') {
+				// Android device with Scene Viewer support
+				androidContainer.classList.remove('hidden');
+
+				// Add click handler for Android AR launch
+				androidButton.addEventListener('click', () => {
+					try {
+						launchAndroidSceneViewer(MODEL.glbPath, MODEL.name);
+					} catch (error) {
+						console.error('Failed to launch AR:', error);
+						alert('Failed to launch AR viewer. Please ensure Google AR Services is installed.');
+					}
+				});
+			} else {
+				// Non-AR device (desktop or older mobile)
+				fallbackContainer.classList.remove('hidden');
+			}
+		});
+	</script>
+</body>
+</html>

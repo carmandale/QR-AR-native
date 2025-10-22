@@ -1,0 +1,53 @@
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*.tmp
+*.swp
+*~
+
+# Local development
+.beads/
+.claude/settings.local.json
+
+# IDE / Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+
+# Environment
+.env
+.env.local
+.env*.local
+
+# Build artifacts
+dist/
+build/
+out/
+*.log
+*.pid
+
+# Dependencies (if using npm/yarn for tooling in future)
+node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Temporary files
+*.bak
+*.cache
+.cache/
+
+# Testing
+coverage/
+.nyc_output/
+
+# CloudFlare Pages
+.wrangler/

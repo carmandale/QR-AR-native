@@ -1,0 +1,355 @@
+/**
+ * AR Device Detection - Base Styles
+ *
+ * Mobile-first responsive design with dark mode support
+ * Zero dependencies, vanilla CSS
+ *
+ * Constitution Principle II: Performance First
+ * - Minimal CSS bundle size
+ * - Mobile-first (most users are mobile)
+ * - Fast rendering, no expensive effects
+ */
+
+/* ========================================
+   CSS Custom Properties (CSS Variables)
+   ======================================== */
+
+:root {
+	/* Colors - Light Mode */
+	--background: #ffffff;
+	--foreground: #1a1a1a;
+	--muted: #6b7280;
+	--border: #e5e7eb;
+	--primary: #3b82f6;
+	--primary-hover: #2563eb;
+	--success: #10b981;
+	--danger: #ef4444;
+
+	/* Spacing */
+	--spacing-xs: 0.5rem;
+	--spacing-sm: 1rem;
+	--spacing-md: 1.5rem;
+	--spacing-lg: 2rem;
+	--spacing-xl: 3rem;
+
+	/* Typography */
+	--font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--font-size-sm: 0.875rem;
+	--font-size-base: 1rem;
+	--font-size-lg: 1.125rem;
+	--font-size-xl: 1.5rem;
+	--font-size-2xl: 2rem;
+
+	/* Border Radius */
+	--radius-sm: 0.375rem;
+	--radius-md: 0.5rem;
+	--radius-lg: 0.75rem;
+
+	/* Shadows */
+	--shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+	--shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+	--shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Dark Mode */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--background: #0a0a0a;
+		--foreground: #f5f5f5;
+		--muted: #9ca3af;
+		--border: #27272a;
+		--primary: #60a5fa;
+		--primary-hover: #3b82f6;
+		--success: #34d399;
+		--danger: #f87171;
+	}
+}
+
+/* ========================================
+   Base Styles
+   ======================================== */
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+html {
+	font-size: 16px;
+	-webkit-text-size-adjust: 100%;
+}
+
+body {
+	font-family: var(--font-sans);
+	font-size: var(--font-size-base);
+	line-height: 1.6;
+	color: var(--foreground);
+	background-color: var(--background);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* ========================================
+   Typography
+   ======================================== */
+
+h1, h2, h3, h4, h5, h6 {
+	margin-bottom: var(--spacing-sm);
+	line-height: 1.2;
+	font-weight: 600;
+}
+
+h1 {
+	font-size: var(--font-size-2xl);
+}
+
+h2 {
+	font-size: var(--font-size-xl);
+}
+
+h3 {
+	font-size: var(--font-size-lg);
+}
+
+p {
+	margin-bottom: var(--spacing-sm);
+}
+
+a {
+	color: var(--primary);
+	text-decoration: none;
+	transition: color 0.2s ease;
+}
+
+a:hover {
+	color: var(--primary-hover);
+}
+
+/* ========================================
+   Layout
+   ======================================== */
+
+.container {
+	width: 100%;
+	max-width: 1200px;
+	margin: 0 auto;
+	padding: 0 var(--spacing-md);
+}
+
+.page-header {
+	text-align: center;
+	padding: var(--spacing-lg) 0;
+	border-bottom: 1px solid var(--border);
+	margin-bottom: var(--spacing-lg);
+}
+
+.page-content {
+	min-height: 60vh;
+	padding: var(--spacing-md) 0;
+}
+
+.page-footer {
+	text-align: center;
+	padding: var(--spacing-lg) 0;
+	border-top: 1px solid var(--border);
+	margin-top: var(--spacing-xl);
+	color: var(--muted);
+	font-size: var(--font-size-sm);
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+
+.btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: var(--spacing-sm) var(--spacing-lg);
+	font-size: var(--font-size-base);
+	font-weight: 500;
+	line-height: 1;
+	border-radius: var(--radius-md);
+	border: none;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	text-decoration: none;
+}
+
+.btn-primary {
+	background-color: var(--primary);
+	color: white;
+	box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+	background-color: var(--primary-hover);
+	box-shadow: var(--shadow-md);
+	transform: translateY(-1px);
+}
+
+.btn-primary:active {
+	transform: translateY(0);
+	box-shadow: var(--shadow-sm);
+}
+
+.btn-large {
+	padding: var(--spacing-md) var(--spacing-xl);
+	font-size: var(--font-size-lg);
+}
+
+.btn-block {
+	display: flex;
+	width: 100%;
+}
+
+/* ========================================
+   AR Viewer Container
+   ======================================== */
+
+.ar-viewer {
+	text-align: center;
+	padding: var(--spacing-xl) 0;
+}
+
+.ar-preview {
+	max-width: 100%;
+	height: auto;
+	border-radius: var(--radius-lg);
+	box-shadow: var(--shadow-lg);
+	margin-bottom: var(--spacing-md);
+}
+
+.ar-button-container {
+	margin-top: var(--spacing-lg);
+}
+
+.ar-info {
+	max-width: 600px;
+	margin: var(--spacing-lg) auto 0;
+	padding: var(--spacing-md);
+	background-color: var(--background);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-md);
+	font-size: var(--font-size-sm);
+	color: var(--muted);
+}
+
+/* ========================================
+   Model Gallery (Landing Page)
+   ======================================== */
+
+.model-gallery {
+	display: grid;
+	grid-template-columns: 1fr;
+	gap: var(--spacing-lg);
+	margin-top: var(--spacing-lg);
+}
+
+@media (min-width: 768px) {
+	.model-gallery {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+@media (min-width: 1024px) {
+	.model-gallery {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.model-card {
+	background-color: var(--background);
+	border: 1px solid var(--border);
+	border-radius: var(--radius-lg);
+	overflow: hidden;
+	transition: all 0.2s ease;
+	box-shadow: var(--shadow-sm);
+}
+
+.model-card:hover {
+	box-shadow: var(--shadow-lg);
+	transform: translateY(-2px);
+}
+
+.model-card img {
+	width: 100%;
+	height: 200px;
+	object-fit: cover;
+}
+
+.model-card-content {
+	padding: var(--spacing-md);
+}
+
+.model-card h3 {
+	margin-bottom: var(--spacing-xs);
+}
+
+.model-card p {
+	color: var(--muted);
+	font-size: var(--font-size-sm);
+	margin-bottom: var(--spacing-md);
+}
+
+/* ========================================
+   Fallback Content
+   ======================================== */
+
+.fallback-content {
+	text-align: center;
+	padding: var(--spacing-lg);
+}
+
+.fallback-content .ar-preview {
+	opacity: 0.9;
+}
+
+.system-requirements {
+	margin-top: var(--spacing-lg);
+	padding: var(--spacing-md);
+	background-color: var(--background);
+	border: 2px solid var(--border);
+	border-radius: var(--radius-md);
+	font-size: var(--font-size-sm);
+	color: var(--muted);
+}
+
+/* ========================================
+   Utility Classes
+   ======================================== */
+
+.hidden {
+	display: none !important;
+}
+
+.text-center {
+	text-align: center;
+}
+
+.text-muted {
+	color: var(--muted);
+}
+
+.mt-sm { margin-top: var(--spacing-sm); }
+.mt-md { margin-top: var(--spacing-md); }
+.mt-lg { margin-top: var(--spacing-lg); }
+.mb-sm { margin-bottom: var(--spacing-sm); }
+.mb-md { margin-bottom: var(--spacing-md); }
+.mb-lg { margin-bottom: var(--spacing-lg); }
+
+/* ========================================
+   Performance Optimizations
+   ======================================== */
+
+/* Reduce animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+	}
+}
