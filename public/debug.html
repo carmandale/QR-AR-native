@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Debug Info</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #f0f0f0; }
+        .info { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .label { font-weight: bold; color: #666; }
+        .value { color: #000; }
+        .success { color: green; }
+        .error { color: red; }
+        #model-test { border: 2px solid blue; height: 300px; background: #fff; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <h1>AR Debug Information</h1>
+    
+    <div class="info">
+        <div class="label">User Agent:</div>
+        <div class="value" id="ua"></div>
+    </div>
+    
+    <div class="info">
+        <div class="label">iOS Version:</div>
+        <div class="value" id="ios-version"></div>
+    </div>
+    
+    <div class="info">
+        <div class="label">Safari Version:</div>
+        <div class="value" id="safari-version"></div>
+    </div>
+    
+    <div class="info">
+        <div class="label">HTMLModelElement Support:</div>
+        <div class="value" id="model-support"></div>
+    </div>
+    
+    <div class="info">
+        <div class="label">AR Quick Look Support:</div>
+        <div class="value" id="ar-support"></div>
+    </div>
+    
+    <h2>Model Element Test</h2>
+    <div class="info">
+        <p>If model element works, you should see a 3D model below:</p>
+        <model id="model-test" stagemode="orbit">
+            <source src="/models/fire.usdz" type="model/vnd.usdz+zip">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='300'%3E%3Crect fill='orange' width='400' height='300'/%3E%3Ctext fill='white' x='50%25' y='50%25' text-anchor='middle' font-size='24'%3EModel Loading...%3C/text%3E%3C/svg%3E" alt="Test model">
+        </model>
+        <div id="model-status"></div>
+    </div>
+    
+    <h2>Console Logs</h2>
+    <div class="info">
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        const log = (msg) => {
+            const logsDiv = document.getElementById('logs');
+            logsDiv.innerHTML += '<div>' + msg + '</div>';
+            console.log(msg);
+        };
+
+        // User Agent
+        document.getElementById('ua').textContent = navigator.userAgent;
+        
+        // Parse iOS version
+        const ua = navigator.userAgent;
+        const iosMatch = ua.match(/OS (\d+)_(\d+)(?:_(\d+))?/);
+        if (iosMatch) {
+            document.getElementById('ios-version').innerHTML = 
+                '<span class="success">iOS ' + iosMatch[1] + '.' + iosMatch[2] + (iosMatch[3] ? '.' + iosMatch[3] : '') + '</span>';
+        } else {
+            document.getElementById('ios-version').innerHTML = '<span class="error">Not iOS or unable to detect</span>';
+        }
+        
+        // Safari version
+        const safariMatch = ua.match(/Version\/(\d+\.\d+)/);
+        if (safariMatch) {
+            document.getElementById('safari-version').innerHTML = '<span class="success">Safari ' + safariMatch[1] + '</span>';
+        } else {
+            document.getElementById('safari-version').innerHTML = '<span class="error">Unable to detect Safari version</span>';
+        }
+        
+        // HTMLModelElement support
+        const supportsModel = typeof HTMLModelElement !== 'undefined';
+        document.getElementById('model-support').innerHTML = supportsModel 
+            ? '<span class="success">✅ YES - Browser supports &lt;model&gt; element</span>'
+            : '<span class="error">❌ NO - Browser does not support &lt;model&gt; element</span>';
+        
+        log('HTMLModelElement support: ' + supportsModel);
+        
+        // AR Quick Look support
+        const supportsAR = document.createElement('a').relList.supports('ar');
+        document.getElementById('ar-support').innerHTML = supportsAR
+            ? '<span class="success">✅ YES - rel="ar" supported</span>'
+            : '<span class="error">❌ NO - rel="ar" not supported</span>';
+        
+        log('AR Quick Look support: ' + supportsAR);
+        
+        // Test model element
+        const modelEl = document.getElementById('model-test');
+        const statusDiv = document.getElementById('model-status');
+        
+        if (supportsModel && modelEl) {
+            log('Attempting to load model element...');
+            
+            if (modelEl.ready) {
+                modelEl.ready.then(() => {
+                    statusDiv.innerHTML = '<span class="success">✅ Model loaded successfully!</span>';
+                    log('✅ Model loaded successfully!');
+                }).catch((error) => {
+                    statusDiv.innerHTML = '<span class="error">❌ Model failed to load: ' + error + '</span>';
+                    log('❌ Model failed: ' + error);
+                });
+            } else {
+                statusDiv.innerHTML = '<span class="error">❌ Model element has no .ready property</span>';
+                log('❌ Model element has no .ready property');
+            }
+        } else {
+            statusDiv.innerHTML = '<span class="error">❌ Browser does not support model element</span>';
+            log('Browser does not support model element');
+        }
+    </script>
+</body>
+</html>

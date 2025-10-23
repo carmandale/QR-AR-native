@@ -3,152 +3,253 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="View the Flood Disaster Scenario in augmented reality. Interactive 3D model showing flood water levels and affected infrastructure.">
-	<title>Flood Disaster Scenario | AR Model</title>
-
-	<!-- Styles -->
-	<link rel="stylesheet" href="/assets/css/styles.css">
+	<meta name="description" content="Flood Disaster Scenario - Launch AR experience">
+	<title>Flood | AR Disaster Scenarios</title>
 
 	<!-- Device Detection & AR Launcher -->
 	<script src="/assets/js/device-detection.js"></script>
 	<script src="/assets/js/ar-launcher.js"></script>
+
+	<style>
+		/* Reset & Base */
+		* {
+			margin: 0;
+			padding: 0;
+			box-sizing: border-box;
+		}
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+			background-color: #000000;
+			color: #ffffff;
+			overflow: hidden;
+			height: 100vh;
+			width: 100vw;
+			position: relative;
+		}
+
+		/* Full-screen container */
+		.flood-container {
+			height: 100vh;
+			width: 100vw;
+			position: relative;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+		}
+
+		/* Flood background at bottom */
+		.flood-background {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			width: 100%;
+			height: 60vh;
+			background-image: url('/assets/images/flood-bg.png');
+			background-size: cover;
+			background-position: center bottom;
+			background-repeat: no-repeat;
+			z-index: 1;
+			pointer-events: none;
+		}
+
+		/* Fixed corner elements */
+		.corner-element {
+			position: fixed;
+			z-index: 10;
+		}
+
+		.stripes {
+			top: 0;
+			left: 0;
+			width: 120px;
+			height: 120px;
+		}
+
+		.logo {
+			top: 20px;
+			right: 20px;
+			width: 80px;
+			height: auto;
+		}
+
+		/* Center content */
+		.center-content {
+			position: relative;
+			z-index: 5;
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+			justify-content: center;
+			gap: 30px;
+			padding: 20px;
+		}
+
+		.flood-badge {
+			width: 180px;
+			height: auto;
+			animation: fadeIn 0.6s ease-out;
+		}
+
+		.launch-button {
+			width: 280px;
+			height: auto;
+			cursor: pointer;
+			transition: transform 0.2s ease;
+			animation: fadeIn 1s ease-out;
+		}
+
+		.launch-button:hover {
+			transform: scale(1.05);
+		}
+
+		.launch-button:active {
+			transform: scale(0.95);
+		}
+
+		/* Animations */
+		@keyframes fadeIn {
+			from {
+				opacity: 0;
+				transform: translateY(20px);
+			}
+			to {
+				opacity: 1;
+				transform: translateY(0);
+			}
+		}
+
+		/* Responsive adjustments */
+		@media (max-width: 768px) {
+			.stripes {
+				width: 80px;
+				height: 80px;
+			}
+
+			.logo {
+				width: 60px;
+				top: 15px;
+				right: 15px;
+			}
+
+			.flood-badge {
+				width: 140px;
+			}
+
+			.launch-button {
+				width: 220px;
+			}
+		}
+
+		@media (max-width: 480px) {
+			.stripes {
+				width: 60px;
+				height: 60px;
+			}
+
+			.logo {
+				width: 50px;
+				top: 10px;
+				right: 10px;
+			}
+
+			.flood-badge {
+				width: 120px;
+			}
+
+			.launch-button {
+				width: 200px;
+			}
+
+			.center-content {
+				gap: 20px;
+			}
+		}
+
+		/* Hidden AR link for iOS Quick Look */
+		#ios-ar-link {
+			display: none;
+		}
+	</style>
 </head>
 <body>
-	<div class="container">
-		<!-- Page Header -->
-		<header class="page-header">
-			<h1>Flood Disaster Scenario</h1>
-			<p class="text-muted">Interactive AR model for emergency preparedness training</p>
-		</header>
+	<div class="flood-container">
+		<!-- Flood background image -->
+		<div class="flood-background"></div>
 
-		<!-- Page Content -->
-		<main class="page-content">
-			<div class="ar-viewer">
-				<!-- AR Preview Image (fallback for non-AR devices) -->
-				<img
-					id="ar-preview"
-					class="ar-preview"
-					src="/assets/images/flood-preview.png"
-					alt="3D model preview showing flood water levels and affected infrastructure"
-					onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 width=%27800%27 height=%27600%27%3E%3Crect fill=%27%23ddd%27 width=%27800%27 height=%27600%27/%3E%3Ctext fill=%27%23999%27 x=%2750%25%27 y=%2750%25%27 text-anchor=%27middle%27 dy=%27.3em%27 font-size=%2724%27%3EFlood Disaster Model%3C/text%3E%3C/svg%3E'"
-				>
+		<!-- Fixed corner elements -->
+		<img src="/assets/images/stripes.png" alt="" class="corner-element stripes">
+		<img src="/assets/images/Logo-2.png" alt="Army National Guard" class="corner-element logo">
 
-				<!-- iOS Quick Look AR Button (hidden by default) -->
-				<div id="ios-ar-container" class="ar-button-container hidden">
-					<a
-						id="ios-ar-link"
-						rel="ar"
-						href="/models/flood.usdz"
-						class="btn btn-primary btn-large btn-block"
-					>
-						<img id="ios-ar-preview" src="/assets/images/flood-preview.png" alt="View in AR" style="display:none;">
-						📱 View in AR (iOS Quick Look)
-					</a>
-				</div>
+		<!-- Center content -->
+		<div class="center-content">
+			<img src="/assets/images/flood-badge.png" alt="Flood Warning" class="flood-badge">
+			<img
+				src="/assets/images/launch-2.png"
+				alt="Launch AR"
+				class="launch-button"
+				id="launch-button"
+				role="button"
+				tabindex="0"
+			>
+		</div>
 
-				<!-- Android Scene Viewer AR Button (hidden by default) -->
-				<div id="android-ar-container" class="ar-button-container hidden">
-					<button
-						id="android-ar-button"
-						class="btn btn-primary btn-large btn-block"
-					>
-						📱 View in AR (Scene Viewer)
-					</button>
-				</div>
-
-				<!-- Fallback Content (for non-AR devices) -->
-				<div id="fallback-container" class="fallback-content hidden">
-					<h2>Flood Disaster Scenario</h2>
-					<p>
-						This 3D model shows flood water levels, affected infrastructure, and safe zones for flood emergency planning.
-					</p>
-					<div class="system-requirements">
-						<p><strong>AR viewing requires:</strong></p>
-						<ul style="text-align: left; max-width: 400px; margin: 0 auto;">
-							<li>iOS 12+ (iPhone 7 or newer), or</li>
-							<li>ARCore-compatible Android device (Android 7.0+)</li>
-						</ul>
-						<p class="mt-md">
-							Scan the QR code with a compatible mobile device to view this model in augmented reality.
-						</p>
-					</div>
-				</div>
-
-				<!-- Model Description (for all devices) -->
-				<div class="ar-info">
-					<h3>About This Model</h3>
-					<p>
-						The Flood Disaster Scenario model illustrates the impact of flooding on communities and infrastructure. Key features include:
-					</p>
-					<ul style="text-align: left; max-width: 500px; margin: 0 auto;">
-						<li>Water level indicators and affected areas</li>
-						<li>Safe zones and evacuation routes</li>
-						<li>Critical infrastructure (power, water, roads)</li>
-						<li>Emergency shelter locations</li>
-					</ul>
-					<p class="mt-md">
-						<strong>Scale:</strong> 1 unit = 1 meter (models appear at realistic size in AR)
-					</p>
-				</div>
-			</div>
-
-			<!-- Navigation -->
-			<div class="text-center mt-lg">
-				<a href="/" class="btn">← Back to All Models</a>
-			</div>
-		</main>
-
-		<!-- Page Footer -->
-		<footer class="page-footer">
-			<p>&copy; 2025 AR Disaster Scenarios. Educational resource for emergency preparedness.</p>
-		</footer>
+		<!-- Hidden iOS Quick Look link -->
+		<a id="ios-ar-link" rel="ar" href="/models/flood.usdz">
+			<img src="/assets/images/flood-badge.png" alt="Launch AR">
+		</a>
 	</div>
 
-	<!-- Initialize AR Experience -->
 	<script>
-		// Model metadata (embedded in page)
-		const MODEL = {
-			id: "flood",
-			name: "Flood Disaster Scenario",
-			description: "3D model showing flood water levels, affected infrastructure, and safe zones for flood emergency planning.",
-			usdzPath: "/models/flood.usdz",
-			glbPath: "/models/flood.glb",
-			previewImage: "/assets/images/flood-preview.png"
+		// Model configuration
+		const FLOOD_MODEL = {
+			usdz: '/models/flood.usdz',
+			glb: '/models/flood.glb',
+			name: 'Flood Disaster Scenario'
 		};
 
-		// Detect device and show appropriate AR button
+		// Initialize on page load
 		window.addEventListener('DOMContentLoaded', () => {
-			const device = detectDevice();
+			const launchButton = document.getElementById('launch-button');
+			const iosArLink = document.getElementById('ios-ar-link');
 
+			// Detect device capabilities
+			const device = detectDevice();
 			console.log('Device detected:', device);
 
-			// Get UI elements
-			const iosContainer = document.getElementById('ios-ar-container');
-			const androidContainer = document.getElementById('android-ar-container');
-			const fallbackContainer = document.getElementById('fallback-container');
-			const androidButton = document.getElementById('android-ar-button');
-
-			// Show appropriate content based on device capabilities
-			if (device.arMethod === 'quicklook') {
-				// iOS device with Quick Look support
-				iosContainer.classList.remove('hidden');
-			} else if (device.arMethod === 'sceneviewer') {
-				// Android device with Scene Viewer support
-				androidContainer.classList.remove('hidden');
-
-				// Add click handler for Android AR launch
-				androidButton.addEventListener('click', () => {
+			// Launch AR function
+			function launchAR() {
+				if (device.arMethod === 'quicklook') {
+					// iOS: Trigger Quick Look via hidden link
+					console.log('Launching iOS Quick Look AR');
+					iosArLink.click();
+				} else if (device.arMethod === 'sceneviewer') {
+					// Android: Launch Scene Viewer
+					console.log('Launching Android Scene Viewer');
 					try {
-						launchAndroidSceneViewer(MODEL.glbPath, MODEL.name);
+						launchAndroidSceneViewer(FLOOD_MODEL.glb, FLOOD_MODEL.name);
 					} catch (error) {
 						console.error('Failed to launch AR:', error);
 						alert('Failed to launch AR viewer. Please ensure Google AR Services is installed.');
 					}
-				});
-			} else {
-				// Non-AR device (desktop or older mobile)
-				fallbackContainer.classList.remove('hidden');
+				} else {
+					// Desktop or unsupported device
+					console.log('AR not supported on this device');
+					alert('AR viewing requires a mobile device.\n\nSupported devices:\n• iOS 12+ (iPhone 7 or newer)\n• ARCore-compatible Android device (Android 7.0+)\n\nPlease scan the QR code with your mobile device.');
+				}
 			}
+
+			// Add click handler to launch button
+			launchButton.addEventListener('click', launchAR);
+
+			// Add keyboard accessibility
+			launchButton.addEventListener('keydown', (e) => {
+				if (e.key === 'Enter' || e.key === ' ') {
+					e.preventDefault();
+					launchAR();
+				}
+			});
 		});
 	</script>
 </body>
